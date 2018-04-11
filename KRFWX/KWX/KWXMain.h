@@ -9,8 +9,12 @@
 //  2018-03-30  Initial implementation
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef KXWXMAIN_H
-#define KXWXMAIN_H
+#ifndef KWX_MAIN_H
+#define KWX_MAIN_H
+
+#if !defined(WXWIN)
+#error No Environment Variable 'WXWIN' found for WxWidgets Library!!!
+#endif
 
 #include <wx/wx.h>
 #include <KxOGLLoader/oglstuff.h>
@@ -101,4 +105,4 @@ enum
     Pyramid_LogW = wxID_HIGHEST + 10
 };
 
-#endif // KXWXMAIN_H
+#endif // KWX_MAIN_H

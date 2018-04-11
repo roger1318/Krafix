@@ -36,7 +36,6 @@
     <KX_DIR_UP1>$(KX_DIR_OFFSET)..</KX_DIR_UP1>
     <KX_DIR_UP2>$(KX_DIR_OFFSET)..\..</KX_DIR_UP2>
     <KX_DIR_UP3>$(KX_DIR_OFFSET)..\..\..</KX_DIR_UP3>
-    <KX_DIR_UP4>$(KX_DIR_OFFSET)..\..\..\..</KX_DIR_UP4>
     <!-- Kx Project Level: Number of Levels Down from the Solution File (Editable) -->
     <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'Kx'"     >1</KX_PROJ_LEVEL>
     <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'KxOGL'"  >1</KX_PROJ_LEVEL>
@@ -83,6 +82,7 @@
     <ClCompile>
       <PreprocessorDefinitions>KX_MAJOR=$(KX_MAJOR);KX_MINOR=$(KX_MINOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions>KXF_MAJOR=$(KXF_MAJOR);KXF_MINOR=$(KXF_MINOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WXWIN=$(WXWIN);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(ProjectName)' != 'KWX'">$(ProjectName)_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -151,6 +151,9 @@
     <BuildMacro Include="KX_DIR_NAME_INTERMEDIATE">
       <Value>$(KX_DIR_NAME_INTERMEDIATE)</Value>
     </BuildMacro>
+    <BuildMacro Include="KX_DIR_NAME_PCH">
+      <Value>$(KX_DIR_NAME_PCH)</Value>
+    </BuildMacro>
     <BuildMacro Include="KX_DIR_OFFSET">
       <Value>$(KX_DIR_OFFSET)</Value>
     </BuildMacro>
@@ -161,7 +164,7 @@
       <Value>$(KX_DIR_UP2)</Value>
     </BuildMacro>
     <BuildMacro Include="KX_DIR_UP3">
-      <Value>$(KX_DIR_UP4)</Value>
+      <Value>$(KX_DIR_UP3)</Value>
     </BuildMacro>
     <BuildMacro Include="KX_PROJ_LEVEL">
       <Value>$(KX_PROJ_LEVEL)</Value>
@@ -175,7 +178,13 @@
     <BuildMacro Include="KX_DIR_INTERMEDIATE">
       <Value>$(KX_DIR_INTERMEDIATE)</Value>
     </BuildMacro>
+    <BuildMacro Include="KX_DIR_PCH">
+      <Value>$(KX_DIR_PCH)</Value>
+    </BuildMacro>
     <!-- ................................. WX Widgets Macros .................................  -->
+    <BuildMacro Include="WXWIN">
+      <Value>$(WXWIN)</Value>
+    </BuildMacro>
     <BuildMacro Include="WXWIN_DIR_INCLUDE">
       <Value>$(WXWIN_DIR_INCLUDE)</Value>
     </BuildMacro>
