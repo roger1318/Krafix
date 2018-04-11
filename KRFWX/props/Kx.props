@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Kx Properties</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <!-- =============================================== User Macros ================================================ -->
+  <PropertyGroup Label="UserMacros">
+    <!-- ............................... Visual Studio Version ...............................  -->
+    <KX_VS_VERSION Condition="'$(PlatformToolset)' == 'v120' ">VS2013</KX_VS_VERSION>
+    <KX_VS_VERSION Condition="'$(PlatformToolset)' == 'v140' ">VS2015</KX_VS_VERSION>
+    <KX_VS_VERSION Condition="'$(PlatformToolset)' == 'v141' ">VS2017</KX_VS_VERSION>
+    <!-- ..................................... Kx Macros .....................................  -->
+    <!-- Kx Version Major/Minor Number (Editable) -->
+    <KX_MAJOR>1</KX_MAJOR>
+    <KX_MINOR>0</KX_MINOR>
+    <!-- Kx File Format .kxf Version (Editable) -->
+    <KXF_MAJOR>1</KXF_MAJOR>
+    <KXF_MINOR>0</KXF_MINOR>
+    <!-- Kx Version Suffix -->
+    <KX_VERSION Condition="'$(Configuration)' == 'Debug'">$(KX_MAJOR)$(KX_MINOR)d</KX_VERSION>
+    <KX_VERSION Condition="'$(Configuration)' == 'Release'">$(KX_MAJOR)$(KX_MINOR)</KX_VERSION>
+    <!-- Kx PDB Version Suffix -->
+    <KX_VERSION_PDB Condition="'$(Configuration)' == 'Debug'">$(KX_MAJOR)$(KX_MINOR)d</KX_VERSION_PDB>
+    <KX_VERSION_PDB Condition="'$(Configuration)' == 'Release'">$(KX_MAJOR)$(KX_MINOR)</KX_VERSION_PDB>
+    <!-- Kx Library Identity Suffix -->
+    <KX_DIR_SUFFIX>$(KX_VS_VERSION)_$(Platform)_$(Configuration)</KX_DIR_SUFFIX>
+    <!-- Kx Output Directory Name -->
+    <KX_DIR_NAME_LIB>lib_$(KX_DIR_SUFFIX)</KX_DIR_NAME_LIB>
+    <!-- Kx Intermediate Directory Name -->
+    <KX_DIR_NAME_INTERMEDIATE>int_$(KX_DIR_SUFFIX)</KX_DIR_NAME_INTERMEDIATE>
+    <!-- Kx Precompiled Header Directory Name -->
+    <KX_DIR_NAME_PCH>pch_$(KX_DIR_SUFFIX)</KX_DIR_NAME_PCH>
+    <!-- Kx Directory Offset Reference: Default empty -->
+    <KX_DIR_OFFSET></KX_DIR_OFFSET>
+    <!-- Kx Library Directory Candidates: Up 1 ~ 4 levels from Project File Directory -->
+    <KX_DIR_UP1>$(KX_DIR_OFFSET)..</KX_DIR_UP1>
+    <KX_DIR_UP2>$(KX_DIR_OFFSET)..\..</KX_DIR_UP2>
+    <KX_DIR_UP3>$(KX_DIR_OFFSET)..\..\..</KX_DIR_UP3>
+    <KX_DIR_UP4>$(KX_DIR_OFFSET)..\..\..\..</KX_DIR_UP4>
+    <!-- Kx Project Level: Number of Levels Down from the Solution File (Editable) -->
+    <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'Kx'"     >1</KX_PROJ_LEVEL>
+    <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'KxOGL'"  >1</KX_PROJ_LEVEL>
+    <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'KWX'"    >1</KX_PROJ_LEVEL>
+    <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'KxRt'"   >2</KX_PROJ_LEVEL>
+    <KX_PROJ_LEVEL Condition="'$(ProjectName)' == 'KxRtOGL'">2</KX_PROJ_LEVEL>
+    <!-- Kx Output/Intermediate Directory - Number of Up Levels from Project File -->
+    <KX_DIR_UP Condition="'$(KX_PROJ_LEVEL)' == '1'">$(KX_DIR_UP2)</KX_DIR_UP>
+    <KX_DIR_UP Condition="'$(KX_PROJ_LEVEL)' == '2'">$(KX_DIR_UP3)</KX_DIR_UP>
+    <!-- Kx Output Directory -->
+    <KX_DIR_LIB>$(KX_DIR_UP)\$(KX_DIR_NAME_LIB)</KX_DIR_LIB>
+    <!-- Kx Intermediate Directory -->
+    <KX_DIR_INTERMEDIATE>$(KX_DIR_UP)\temp\$(KX_DIR_NAME_INTERMEDIATE)\$(ProjectName)</KX_DIR_INTERMEDIATE>
+    <!-- Kx Precompiled Header Directory -->
+    <KX_DIR_PCH>$(KX_DIR_UP)\temp\$(KX_DIR_NAME_PCH)</KX_DIR_PCH>
+    <!-- ................................. WX Widgets Macros .................................  -->
+    <WXWIN_DIR_INCLUDE>$(WXWIN)\include;$(WXWIN)\include\msvc</WXWIN_DIR_INCLUDE>
+    <WXWIN_DIR_LIB Condition="'$(Platform)' == 'Win32'">$(WXWIN)\lib\vc_lib</WXWIN_DIR_LIB>
+    <WXWIN_DIR_LIB Condition="'$(Platform)' == 'x64'">$(WXWIN)\lib\vc_x64_lib</WXWIN_DIR_LIB>
+  </PropertyGroup>
+  <!-- ============================================ General >> General ============================================ -->
+  <PropertyGroup>
+    <!-- Output Directory -->
+    <OutDir>$(KX_DIR_LIB)\</OutDir>
+    <!-- Intermediate Directory -->
+    <IntDir>$(KX_DIR_INTERMEDIATE)\</IntDir>
+    <!-- Target Name -->
+    <TargetName>$(ProjectName)$(KX_VERSION)</TargetName>
+  </PropertyGroup>
+  <!-- ============================================= C/C++ >> General ============================================= -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- Additional Include Directories -->
+      <AdditionalIncludeDirectories Condition="'$(ProjectName)' == 'Kx'"     >.\;..\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(ProjectName)' == 'KxOGL'"  >.\;..\;..\Kx;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(ProjectName)' == 'KWX'"    >.\;..\;..\Kx;..\KxOGL;$(WXWIN_DIR_INCLUDE);%</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(ProjectName)' == 'KxRt'"   >.\;..\..\Kx;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(ProjectName)' == 'KxRtOGL'">.\;..\..\Kx;</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <!-- ========================================== C/C++ >> Preprocessor =========================================== -->
+  <!-- Preprocessor Definitions -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>KX_MAJOR=$(KX_MAJOR);KX_MINOR=$(KX_MINOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KXF_MAJOR=$(KXF_MAJOR);KXF_MINOR=$(KXF_MINOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(ProjectName)' != 'KWX'">$(ProjectName)_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <!-- ======================================= C/C++ >> Precompiled Headers ======================================= -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader> <!-- Create/Use/NotUsing -->
+      <PrecompiledHeaderFile Condition="'$(ProjectName)' == 'Kx'"     >$(ProjectName)Kernel/$(ProjectName)Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(ProjectName)' == 'KxOGL'"  >$(ProjectName)Kernel/$(ProjectName)Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(ProjectName)' == 'KWX'"    >$(ProjectName)Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(ProjectName)' == 'KxRt'"   >$(ProjectName)Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(ProjectName)' == 'KxRtOGL'">$(ProjectName)Pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(KX_DIR_PCH)\$(TargetName).pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <!-- ============================================ Linker >> General ============================================= -->
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalLibraryDirectories >$(KX_DIR_LIB)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories  Condition="'$(ProjectName)' == 'KWX'">$(WXWIN_DIR_LIB)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <!-- ============================================= Linker >> Input ============================================== -->
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies Condition="'$(ProjectName)' == 'KxOGL'">opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(ProjectName)' == 'KWX'">Kx$(KX_VERSION).lib;KxOGL$(KX_VERSION).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(ProjectName)' == 'KxRt'">Kx$(KX_VERSION).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(ProjectName)' == 'KxRtOGL'">Kx$(KX_VERSION).lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <!-- ================================================== Others ================================================== -->
+
+  <!-- ================================= Visible User Macros in Property Sheet =================================== -->
+  <ItemGroup>
+    <!-- ............................... Visual Studio Version ...............................  -->
+    <BuildMacro Include="KX_VS_VERSION">
+      <Value>$(KX_VS_VERSION)</Value>
+    </BuildMacro>
+    <!-- ..................................... Kx Macros .....................................  -->
+    <BuildMacro Include="KX_MAJOR">
+      <Value>$(KX_MAJOR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_MINOR">
+      <Value>$(KX_MINOR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KXF_MAJOR">
+      <Value>$(KXF_MAJOR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KXF_MINOR">
+      <Value>$(KXF_MINOR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_VERSION">
+      <Value>$(KX_VERSION)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_VERSION_PDB">
+      <Value>$(KX_VERSION_PDB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_SUFFIX">
+      <Value>$(KX_DIR_SUFFIX)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_NAME_LIB">
+      <Value>$(KX_DIR_NAME_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_NAME_INTERMEDIATE">
+      <Value>$(KX_DIR_NAME_INTERMEDIATE)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_OFFSET">
+      <Value>$(KX_DIR_OFFSET)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_UP1">
+      <Value>$(KX_DIR_UP1)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_UP2">
+      <Value>$(KX_DIR_UP2)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_UP3">
+      <Value>$(KX_DIR_UP4)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_PROJ_LEVEL">
+      <Value>$(KX_PROJ_LEVEL)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_UP">
+      <Value>$(KX_DIR_UP)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_LIB">
+      <Value>$(KX_DIR_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="KX_DIR_INTERMEDIATE">
+      <Value>$(KX_DIR_INTERMEDIATE)</Value>
+    </BuildMacro>
+    <!-- ................................. WX Widgets Macros .................................  -->
+    <BuildMacro Include="WXWIN_DIR_INCLUDE">
+      <Value>$(WXWIN_DIR_INCLUDE)</Value>
+    </BuildMacro>
+    <BuildMacro Include="WXWIN_DIR_LIB">
+      <Value>$(WXWIN_DIR_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
